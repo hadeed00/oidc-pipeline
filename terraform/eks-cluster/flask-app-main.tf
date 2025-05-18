@@ -3,9 +3,13 @@ resource "helm_release" "flask_app" {
   chart      = "./../../helm/flask-app"
   namespace  = "default"
 
-  set {
-    name  = "service.type"
-    value = "LoadBalancer"
-  }
   depends_on = [helm_release.nginx_ingress]
+}
+
+locals {
+  chart_values = {
+    service = {
+      type = "ClusterIP"
+    }
+  }
 }
