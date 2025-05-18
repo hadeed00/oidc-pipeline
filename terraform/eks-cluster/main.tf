@@ -110,16 +110,25 @@ module "eks" {
     }
   }
 
-
+  manage_aws_auth_configmap = true
   aws_auth_users = [
     {
       userarn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/${var.iam_user_name}"
       username = var.iam_user_name
       groups   = ["system:masters"]
     },
-    {userarn = "arn:aws:iam::447989883825:user/devops-admin"
+    {
+      userarn = "arn:aws:iam::447989883825:user/devops-admin"
       username = "devops-admin"
       groups   = ["system:masters"]
+    }
+  ]
+
+  aws_auth_roles = [
+    {
+      rolearn  = module.eks.cluster_iam_role_arn
+      username = "system:node:{{EC2PrivateDNSName}}"
+      groups   = ["system:bootstrappers", "system:nodes"]
     }
   ]
 
