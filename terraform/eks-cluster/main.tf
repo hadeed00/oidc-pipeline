@@ -115,6 +115,10 @@ module "eks" {
       userarn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/${var.iam_user_name}"
       username = var.iam_user_name
       groups   = ["system:masters"]
+    },
+    {userarn = "arn:aws:iam::447989883825:user/devops-admin"
+      username = "devops-admin"
+      groups   = ["system:masters"]
     }
   ]
 
