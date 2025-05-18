@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
 
     defaults:
-      runs:
+      run:
         working-directory: ./terraform/eks-cluster
 
     steps:
