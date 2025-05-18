@@ -3,12 +3,12 @@ resource "helm_release" "flask_app" {
   chart      = "./../../helm/flask-app"
   namespace  = "default"
 
-  values     = [yamlencode(local.chart_values)]
+  values     = [yamlencode(local.chart_values_flask)]
   depends_on = [helm_release.nginx_ingress]
 }
 
 locals {
-  chart_values = {
+  chart_values_flask = {
     service = {
       type = "ClusterIP"
     }

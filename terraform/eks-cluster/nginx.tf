@@ -3,11 +3,11 @@ resource "helm_release" "nginx_ingress" {
   repository = "https://kubernetes.github.io/ingress-nginx"
   chart      = "ingress-nginx"
   version    = "4.7.1"  
-  values = [yamlencode(local.chart_values)]
+  values = [yamlencode(local.chart_values_nginx)]
 }
 
 locals {
-  chart_values = {
+  chart_values_nginx = {
     controller = {
       service = {
         type    = "LoadBalancer"
