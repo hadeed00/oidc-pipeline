@@ -110,7 +110,7 @@ module "eks" {
     }
   }
 
-  manage_aws_auth_configmap = true
+  manage_aws_auth_configmap = false
   aws_auth_users = [
     {
       userarn  = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:user/${var.iam_user_name}"
