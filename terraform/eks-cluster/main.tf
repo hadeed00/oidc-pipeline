@@ -10,7 +10,7 @@ terraform {
 data "aws_caller_identity" "current" {}
 
 module "vpc" {
-  source  = "git::https://https://github.com/terraform-aws-modules/terraform-aws-vpc?ref=c467edb180c38f493b0e9c6fdc22998a97dfde89" # v5.2.0
+  source  = "git::https://github.com/terraform-aws-modules/terraform-aws-vpc?ref=c467edb180c38f493b0e9c6fdc22998a97dfde89" # v5.2.0
   # version = "5.2.0"
 
   name = "eks-vpc"
