@@ -11,7 +11,7 @@ data "aws_caller_identity" "current" {}
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws?ref=c467edb180c38f493b0e9c6fdc22998a97dfde89" # v5.2.0
-  version = "5.2.0"
+  # version = "5.2.0"
 
   name = "eks-vpc"
   cidr = var.vpc_cidr
@@ -48,7 +48,7 @@ module "vpc" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws?ref=2cb1fac31b0fc2dd6a236b0c0678df75819c5a3b" # v19.21.0
-  version = "19.21.0"
+  # version = "19.21.0"
 
   cluster_name    = var.cluster_name
   cluster_version = "1.31"
