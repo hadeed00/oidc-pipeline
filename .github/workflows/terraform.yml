@@ -11,23 +11,34 @@ permissions:
   contents: read
 
 jobs:
+  checkov:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.8
+      - name: Test with Checkov
+        id: checkov
+        uses: bridgecrewio/checkov-action@master
+        with:
+          directory: ./terraform
+          framework: terraform
+          config-file: .checkov.yaml
   terraform:
     runs-on: ubuntu-latest
-
     defaults:
       run:
         working-directory: ./terraform
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::447989883825:role/GitHubActionsTerraformRole
           aws-region: eu-west-2
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
 

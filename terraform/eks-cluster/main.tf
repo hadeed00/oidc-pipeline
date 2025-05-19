@@ -53,6 +53,8 @@ module "eks" {
   cluster_name    = var.cluster_name
   cluster_version = "1.31"
 
+  create_cloudwatch_log_group = false
+
   vpc_id      = module.vpc.vpc_id
   subnet_ids  = module.vpc.private_subnets
   enable_irsa = true
@@ -65,7 +67,6 @@ module "eks" {
       
       instance_types = ["t3.small"]
       
-      # Add IAM role configuration
       iam_role_additional_policies = {
         AmazonEKSWorkerNodePolicy          = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
         AmazonEKS_CNI_Policy              = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
@@ -87,14 +88,9 @@ module "eks" {
       # Use public subnets for ingress nodes
       subnet_ids = module.vpc.public_subnets
 
-      # Special taints and labels
-
-
       labels = {
         role = "ingress"
       }
-
-      # IAM role with additional permissions
       iam_role_additional_policies = {
         AmazonEC2FullAccess = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
       }
@@ -102,11 +98,6 @@ module "eks" {
       # AMI and capacity settings
       ami_type       = "AL2_x86_64"
       capacity_type  = "ON_DEMAND"
-
-      # Required for ALB controller
-      update_config = {
-        max_unavailable = 1
-      }
     }
   }
 
