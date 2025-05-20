@@ -1,3 +1,13 @@
+resource "aws_kms_alias" "eks_cluster_alias" {
+  name          = "alias/eks/flask-eks-cluster"
+  target_key_id = "REPLACE_THIS"
+}
+
+import {
+  to = aws_kms_alias.eks_cluster_alias
+  id = "alias/eks/flask-eks-cluster"
+}
+
 terraform {
   backend "s3" {
     bucket         = "flask-devops-tf-state-447989883825-euw2-20240518"
