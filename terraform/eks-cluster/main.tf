@@ -10,8 +10,8 @@ terraform {
 data "aws_caller_identity" "current" {}
 
 module "vpc" {
-  source  = "terraform-aws-modules/vpc/aws"
-  version = "5.1.2"
+  source  = "git::https://github.com/terraform-aws-modules/terraform-aws-vpc?ref=c467edb180c38f493b0e9c6fdc22998a97dfde89" # v5.2.0
+  # version = "5.2.0"
 
   name = "eks-vpc"
   cidr = var.vpc_cidr
@@ -47,11 +47,13 @@ module "vpc" {
 }
 
 module "eks" {
-  source  = "terraform-aws-modules/eks/aws"
-  version = "19.21.0"
+  source  = "git::https://github.com/terraform-aws-modules/terraform-aws-eks.git?ref=2cb1fac31b0fc2dd6a236b0c0678df75819c5a3b" # v19.21.0
+  # version = "19.21.0"
 
   cluster_name    = var.cluster_name
   cluster_version = "1.31"
+
+  create_cloudwatch_log_group = false
 
   vpc_id      = module.vpc.vpc_id
   subnet_ids  = module.vpc.private_subnets
@@ -65,7 +67,6 @@ module "eks" {
       
       instance_types = ["t3.small"]
       
-      # Add IAM role configuration
       iam_role_additional_policies = {
         AmazonEKSWorkerNodePolicy          = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
         AmazonEKS_CNI_Policy              = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
@@ -87,14 +88,9 @@ module "eks" {
       # Use public subnets for ingress nodes
       subnet_ids = module.vpc.public_subnets
 
-      # Special taints and labels
-
-
       labels = {
         role = "ingress"
       }
-
-      # IAM role with additional permissions
       iam_role_additional_policies = {
         AmazonEC2FullAccess = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
       }
@@ -102,11 +98,6 @@ module "eks" {
       # AMI and capacity settings
       ami_type       = "AL2_x86_64"
       capacity_type  = "ON_DEMAND"
-
-      # Required for ALB controller
-      update_config = {
-        max_unavailable = 1
-      }
     }
   }
 
@@ -157,4 +148,14 @@ module "eks" {
       self        = true
     }
   }
+}
+
+module "nginx_ingress" {
+  source = "./nginx"
+  depends_on = [module.eks]
+}
+
+module "flask_app" {
+  source = "./flask-app"
+  depends_on = [module.nginx_ingress]
 }
