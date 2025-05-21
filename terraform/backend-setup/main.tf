@@ -7,6 +7,11 @@ resource "aws_s3_bucket" "terraform_state" {
   force_destroy = true
 }
 
+resource "aws_s3_bucket_public_access_block" "good_example" {
+  bucket            = aws_s3_bucket.terraform_state.id
+  block_public_acls = true
+}
+
 resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state" {
   bucket = aws_s3_bucket.terraform_state.id
   rule {
