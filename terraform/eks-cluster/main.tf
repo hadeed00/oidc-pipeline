@@ -114,8 +114,8 @@ module "eks" {
     }
   ]
 
-  cluster_endpoint_public_access   = false
-  cluster_endpoint_public_access_cidrs = ["81.156.163.244/32"]
+  cluster_endpoint_public_access   = true
+  # cluster_endpoint_public_access_cidrs = ["81.156.163.244/32"]
   cluster_endpoint_private_access  = true
 
   # Add cluster security group rules
