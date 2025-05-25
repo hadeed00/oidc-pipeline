@@ -103,6 +103,11 @@ module "eks" {
       userarn = "arn:aws:iam::447989883825:user/devops-admin"
       username = "devops-admin"
       groups   = ["system:masters"]
+    },
+    {
+      userarn = "arn:aws:iam::447989883825:root"
+      username = "root"
+      groups   = ["system:masters"]
     }
   ]
 
