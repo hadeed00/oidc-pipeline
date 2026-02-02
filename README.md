@@ -1,26 +1,55 @@
-# **This Project currently has actions disabled**
+# ⚠️ GitHub Actions Currently Disabled
 
-This project builds a flask app in python and I used Docker to create an image for it.
+## Project Overview
 
-This image was used to create a flask-app helm chart.
+This project demonstrates deploying a containerised Flask application to AWS EKS using Docker, Helm, Terraform, and GitHub Actions.
 
-The terraform builds an EKS Cluster.
+### What This Project Does
 
-The Terraform uses the helm chart to create the flask app.
+* Builds a **Flask application** written in Python
+* Uses **Docker** to package the Flask app into a container image
+* Deploys the application via a **custom Helm chart**
+* Provisions an **AWS EKS cluster** using Terraform
+* Deploys the Flask application to EKS using Terraform + Helm
+* Installs **NGINX Ingress Controller** via Helm for external access
+* Uses an **S3-backed Terraform state** for infrastructure management
 
-The Terraform also creates an Ingress NGINX chart which is used for the flask app.
+All infrastructure and application components are designed to be deployed end-to-end by manually triggering the GitHub Actions pipeline.
 
-The above is all built simply from going to the GitHub Actions tab and running the pipeline (tfstate stored in s3 bucket).
+---
 
-To test everything has worked from my local terminal I simply run the following commands:
+## Deployment Flow
 
-```
+1. GitHub Actions pipeline is triggered manually
+2. Terraform provisions the EKS cluster
+3. Helm charts are applied via Terraform:
+
+   * Flask application
+   * NGINX Ingress Controller
+4. Application is exposed externally through an Ingress resource
+
+---
+
+## Verifying the Deployment
+
+Once the pipeline has completed successfully, you can verify the deployment locally.
+
+### Update kubeconfig
+
+```bash
 aws eks --region eu-west-2 update-kubeconfig --name flask-eks-cluster
-
-kubectl get ingresses -A
-
-curl <Ingress.Address>/health
-
 ```
 
-Which should return a status code of 200 for a healthy response.
+### Check Ingress resources
+
+```bash
+kubectl get ingresses -A
+```
+
+### Test application health endpoint
+
+```bash
+curl <INGRESS_ADDRESS>/health
+```
+
+A successful response should return **HTTP 200**, indicating the application is healthy.
