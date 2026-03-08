@@ -1,3 +1,10 @@
+# ⚠️ Updated project below
+
+This project was for learning, development and was to showccase my technical ability.
+This project has been replaced with my new project below:
+
+https://github.com/hadeed00/complete-eks-project
+
 # ⚠️ GitHub Actions Currently Disabled
 
 ## Project Overview
